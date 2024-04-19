@@ -196,7 +196,13 @@ h4.riwayat {
   background-size: cover;
   color: black;
 }
-.collapse{
+.container-fluid{
+  background: linear-gradient(to right, #C0E2F5, #ffff);  
+  padding: 10px;
+  font-size: 20px;
+  box-shadow: #107EFF;
+}
+.container{
   background: linear-gradient(to right, #C0E2F5, #ffff);  
   padding: 10px;
   font-size: 20px;
@@ -217,3 +223,15 @@ h4.riwayat {
 .nav-link:hover {
   transform: scale(1.05); /* Definisikan transformasi saat kursor diarahkan ke tombol */
 }
+.b-modal-content {
+  border-radius: 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Gaya untuk konten modal */
+.text-left p {
+  text-align: left;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+}
+

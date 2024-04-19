@@ -11,7 +11,13 @@
       <h5 class="poppins-regular">Kota Semarang</h5>
       </div>
       </div>
-      <div class="d-flex h-50">
+      <div v-if="isLoading" class="text-center">
+        <!-- Bootstrap spinner untuk loading -->
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <div v-else class="d-flex h-50">
         <div class="justify-content-center align-self-center">
           <div class="text-center">
             <h2 class="poppins-black">Selamat Datang Kembali!</h2>
@@ -42,8 +48,15 @@
               aria-label="Password"
             />
           </div>
-          <div class="text-center">
-            <button v-on:click="login()" class="btn btn-primary poppins-semibold">Login</button>
+          <div class="d-flex gap-2 text-center justify-content-center">
+            <div class="text-center">
+              <button v-on:click="login()" class="btn btn-primary poppins-semibold">Login</button>
+            </div>
+            <div class="text-center">
+              <router-link to="/home">
+                <button  class="btn btn-success poppins-semibold">Home</button>
+              </router-link>
+            </div>
           </div>
         </div>
       </div>
@@ -59,15 +72,17 @@ export default {
     return {
       kode:'',
       password:'',
+      isLoading: false,
     };
   },
    methods: {
      login(){
+      this.isLoading = true; 
        var user={
           kode:this.kode,
           password:this.password,
        };
-       axios.post("http://localhost/BE/be/public/api/login", user, {
+       axios.post("http://localhost/BackEnd/Backend-Laravel/public/api/login", user, {
        }).then((result) => {
          localStorage.setItem('token', result.data.data.token);
          localStorage.setItem('role', result.data.data.role);
@@ -76,18 +91,32 @@ export default {
          localStorage.setItem('nm_petugas', result.data.data.nm_petugas);
          localStorage.setItem('nolangg', result.data.data.nolangg);
          localStorage.setItem('petugas', result.data.data.petugas);
+         localStorage.setItem('st', result.data.data.st);
          localStorage.setItem('status',true)
+         this.isLoading = false;
          this.$emit('authenticated',true)
         //  console.log(result.data.data.token)
-         this.$router.replace({name: "dashboard"})
+        this.$router.replace({ name: "dashboard" }).catch(err => {
+          if (err.name !== 'NavigationDuplicated') {
+            throw err;
+          }
+        });
        }).catch(error=>{
         console.log(error);
+        this.isLoading = false;
         alert('Password salah atau pengguna tidak ditemukan.');
        })
     }
    },
    mounted(){
     this.$emit("authenticated", false)
+    if (localStorage.getItem('token')) {
+    this.$router.replace({ name: "dashboard" }).catch(err => {
+      if (err.name !== 'NavigationDuplicated') {
+        throw err;
+      }
+    });
+  }
    }
 };
 </script>

@@ -17,7 +17,8 @@
                 <h1 class="poppins-extrabold">PDAM</h1>
                 <h4 class="poppins-regular">Pembaca Meter</h4>
                 <h5 class="poppins-bold">Tirta Moedal Kota Semarang</h5>
-                    <router-link to="/Login" class="btn btn-primary poppins-semibold">
+                    <router-link to="/login" class="btn btn-primary poppins-semibold">
+                   <Label></Label>
                    Login
                 </router-link>
             </div>

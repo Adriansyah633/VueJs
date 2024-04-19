@@ -4,10 +4,13 @@ import router from './router';
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue';
 import axios from 'axios';
 
+
+
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import './assets/css/main.css';
-import '@fortawesome/fontawesome-free/css/all.css'
+import '@fortawesome/fontawesome-free/css/all.css';
+
 
 
 

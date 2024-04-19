@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard">
+  <div class="dashboard" style="margin: none;">
       <NavbarCom />
        <DashboardComponent />
   </div>

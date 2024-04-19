@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login" style="margin-top: 100px;">
     <div class="container gradient-container rounded-container mt-5">
       <LoginComponent />
     </div>

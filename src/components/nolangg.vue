@@ -1,6 +1,7 @@
 <template>
-  <div class="container mt-5">
-    <header class="h3 justify-content-center text-center poppins-semibold" style="margin:10px; background-color: #55a3ec;color: white;">
+  <div class="container mt-2">
+    <LoadingComponent v-if="loading" />
+    <header class="h3 justify-content-center text-center poppins-semibold" style=" background-color: #55a3ec;color: white;">
       INPUT DATA MELALUI BENDEL
     </header>
     <div class="row justify-content-center align-items-center">
@@ -70,18 +71,20 @@
           <td>{{ pel.status_baca.nm_status}}</td>
           <td>{{ pel.cabang.nm_cabang }}</td>
           <td>
-            <router-link :to="'/Edit/' + pel.nolangg">
+            <router-link :to="'/editbendel/' + pel.nolangg">
               <button class="btn btn-md btn-success"><i class="fa-solid fa-pen-to-square"></i></button>
             </router-link>
           </td>
           <td class="text-center" width="100%">
-           <div class="form-check form-check-inline">
+           <!-- <div class="form-check form-check-inline">
             <input
             class="form-check-input" 
             type="checkbox"
+            v-model="pel.ditandai"
+            @change="toggleTandai(index)"
             style="transform: scale(2);"
             >
-           </div>
+           </div> -->
           </td>
         </tr>
       </tbody>
@@ -90,19 +93,26 @@
 </template>
 
 <script>
+import LoadingComponent from "./LoadingComponents.vue"; 
 export default {
   name: "NolanggComponent",
+  components:{
+    LoadingComponent
+  },
   data() {
     return {
+      loading:true,
       bendel:"",
       kode :"",
-      pelanggan: "bendelData",
+      pelanggan: [],
       search: this.$route.query.search,
       bendelData: [],
       pagination: {},
       perPage: 10,
       currentPage: 1,
       totalRows: 0,
+      status_baca: "",
+      status_meter: "",
     };
   },
   computed: {
@@ -111,39 +121,35 @@ export default {
     },
   },
   methods: {
-    loadData() {
-      const params = {
-        page: this.currentPage,
-        perPage: this.perPage,
-      };
-      const option = {
-        headers: { Authorization: "bearer " + localStorage.getItem("token") },
-      };
-      const url = `http://localhost/BE/be/public/api/pelanggan?page=${this.currentPage}&per_page=${this.perPage}`;
-      this.$axios
-        .get(url, option, { params })
-        .then((response) => {
-          this.pelanggan = response.data.data;
-          this.pagination = response.data;
-          this.totalRows = response.data.total;
-        })
-        .catch((error) => console.error("Error:", error));
-    },
+    // loadData() {
+    //   const headers = {
+    //     Authorization: "Bearer " + localStorage.getItem("token"),
+    //   };
+    //   const url = `http://localhost/BE/be/public/api/bendel`;
+    //   this.$axios
+    //     .post(url, {headers})
+    //     .then((response) => {
+    //       this.pelanggan = response.data.data;
+    //       this.pagination = response.data;
+    //       this.totalRows = response.data.total;
+    //     })
+    //     .catch((error) => console.error("Error:", error));
+    // },
 
-    tb_pelanggan() {
-      this.loadData();
-    },
+    // tb_pelanggan() {
+    //   this.loadData();
+    // },
     cari_data_nolangg(){
         this.cari_data_dism();
     },
-  cari_data_dism() {
+  loadData() {
     const token = localStorage.getItem('token');
     const kode = localStorage.getItem("kode");
     const params = {
         page: this.currentPage,
         perPage: this.perPage,
       };
-    const url = `http://localhost/BE/be/public/api/bendel`;
+    const url = `http://localhost/BackEnd/Backend-Laravel/public/api/bendel`;
     const data = {
         bendel: this.search,
         kode : kode
@@ -158,15 +164,28 @@ export default {
             this.pelanggan = response.data;
             this.totalRows = response.data.total;
             this.pagination = response.data;
-            this.currentPage= 1;
-            this.perPage = 10;
         })
         .catch(error => console.error("Error:", error));
-}
+    },
+    // toggleTandai(index) {
+    //   this.pelanggan[index].ditandai = !this.pelanggan[index].ditandai;
+    //   // Simpan status ke localStorage
+    //   localStorage.setItem('statusTandai', JSON.stringify(this.pelanggan));
+    // }
   },
-  mounted() {
-    this.cari_data_nolangg();
+  mounted(){
+    setTimeout(() => {
+      this.loading = false; // Set loading to false after the data is loaded
+    }, 2000);
   },
+  // created() {
+  //   let statusTandai = localStorage.getItem('statusTandai');
+  //   if (statusTandai) {
+  //     this.pelanggan = JSON.parse(statusTandai);
+  //   } else {
+  //     this.loadData();
+  //   }
+  // },
 };
 </script>
 

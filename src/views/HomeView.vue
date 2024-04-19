@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" style="margin-top: 100px;">
     <div class="container gradient-container rounded-container mt-5">
       <HeroComponent />
     </div>
