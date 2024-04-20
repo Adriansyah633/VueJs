@@ -1,32 +1,51 @@
 <template>
   <div class="container mt-2">
     <LoadingComponent v-if="loading" />
-    <header class="h3 justify-content-center text-center poppins-semibold" style=" background-color: #55a3ec;color: white;">
-      INPUT DATA MELALUI BENDEL
-    </header>
+    <h4 class="riwayat text-center poppins-semibold">INPUT DATA BY BENDEL</h4>
     <div class="row justify-content-center align-items-center">
       <div class="col mb-4">
-        <div class="row md-3">
-        <router-link to="/dashboard" class="btn btn-primary poppins-semibold">
-          Kembali
-        </router-link>
+        <div class="row md-3 ml-2">
+          <router-link to="/dashboard" class="btn btn-primary poppins-semibold">
+            Kembali
+          </router-link>
+          <router-link to="/riwayat" class="btn btn-danger poppins-semibold">
+            Riwayat Baca
+          </router-link>
         </div>
       </div>
-      <div class="col-md-3">
-        <input
-          type="text"
-          name="cari-data"
-          v-model="search"
-          class="form-control"
-        />
-      </div>
-      <div class="col-md-3">
-        <button
-          class="btn btn-md btn-success"
-          name="cari_nolangg"
-          v-on:click="cari_data_nolangg()">Search</button>
+       
+      <div class="col-md-6 d-flex align-items-center justify-content-end">
+        <div class="row">
+          <div class="col">
+            <button
+              class="btn btn-secondary poppins-semibold"
+              v-on:click="kembali()"
+            >
+            <i class="fa fa-backward" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="col">
+            <input
+              type="text"
+              name="cari-data-nolangg"
+              v-model="search_nolangg"
+              class="form-control form-control-sm" 
+              style="width: 200px;" 
+            />
+          </div>
+          <div class="col">
+            <button
+              class="btn btn-success"
+              name="cari_nolangg"
+              v-on:click="cari_data_nolangg()"
+            >
+              <i class="fa-solid fa-magnifying-glass"></i>  
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+   
     <table
       class="table table-hover table-striped table-responsive"
       id="my-table"
@@ -54,7 +73,7 @@
           <th class="text-center">Data</th>
           <th class="text-center">Cabang</th>
           <th class="text-center">Aksi</th>
-          <th class="text-center">Tandai</th>
+          <!-- <th class="text-center">Tandai</th> -->
         </tr>
       </thead>
       <tbody>
@@ -75,8 +94,8 @@
               <button class="btn btn-md btn-success"><i class="fa-solid fa-pen-to-square"></i></button>
             </router-link>
           </td>
-          <td class="text-center" width="100%">
-           <!-- <div class="form-check form-check-inline">
+          <!-- <td class="text-center" width="100%">
+           <div class="form-check form-check-inline">
             <input
             class="form-check-input" 
             type="checkbox"
@@ -84,8 +103,8 @@
             @change="toggleTandai(index)"
             style="transform: scale(2);"
             >
-           </div> -->
-          </td>
+           </div>
+          </td> -->
         </tr>
       </tbody>
     </table>
@@ -93,6 +112,7 @@
 </template>
 
 <script>
+// import { search } from "core-js/fn/symbol";
 import LoadingComponent from "./LoadingComponents.vue"; 
 export default {
   name: "NolanggComponent",
@@ -113,6 +133,7 @@ export default {
       totalRows: 0,
       status_baca: "",
       status_meter: "",
+      search_nolangg:"",
     };
   },
   computed: {
@@ -136,11 +157,45 @@ export default {
     //     .catch((error) => console.error("Error:", error));
     // },
 
-    // tb_pelanggan() {
-    //   this.loadData();
-    // },
-    cari_data_nolangg(){
-        this.cari_data_dism();
+    tb_pelanggan() {
+      this.loadData();
+    },
+    cari_data_nolangg() {
+    // Cari data berdasarkan nolangg
+    if (this.search.trim() !== '') {
+      const token = localStorage.getItem('token');
+      const kode = localStorage.getItem("kode");
+      const params = {
+        page: this.currentPage,
+        perPage: this.perPage,
+      };
+      const url = `http://localhost/BackEnd/Backend-Laravel/public/api/cari`;
+      const data = {
+        nolangg: this.search_nolangg,
+        kode: kode
+      };
+      const headers = {
+        Authorization: "Bearer " + token,
+      };
+
+      this.$axios.post(url, data, { headers }, { params })
+        .then(response => {
+          console.log(response);
+          this.pelanggan = response.data.data;
+          this.totalRows = response.data.total;
+          this.pagination = response.data;
+        })
+        .catch(error => console.error("Error:", error));
+    } else {
+      // Jika input pencarian kosong, load data semua nolangg
+      this.search_nolangg = '';
+      this.loadData();
+    }
+  },
+  kembali() {
+      // Kembali ke tampilan tabel awal
+      this.search_nolangg = ''; // Reset input pencarian
+      this.loadData(); // Tampilkan semua data
     },
   loadData() {
     const token = localStorage.getItem('token');
@@ -167,25 +222,25 @@ export default {
         })
         .catch(error => console.error("Error:", error));
     },
-    // toggleTandai(index) {
-    //   this.pelanggan[index].ditandai = !this.pelanggan[index].ditandai;
-    //   // Simpan status ke localStorage
-    //   localStorage.setItem('statusTandai', JSON.stringify(this.pelanggan));
-    // }
+    toggleTandai(index) {
+      this.pelanggan[index].ditandai = !this.pelanggan[index].ditandai;
+      // Simpan status ke localStorage
+      localStorage.setItem('statusTandai', JSON.stringify(this.pelanggan));
+    }
   },
   mounted(){
     setTimeout(() => {
       this.loading = false; // Set loading to false after the data is loaded
     }, 2000);
   },
-  // created() {
-  //   let statusTandai = localStorage.getItem('statusTandai');
-  //   if (statusTandai) {
-  //     this.pelanggan = JSON.parse(statusTandai);
-  //   } else {
-  //     this.loadData();
-  //   }
-  // },
+  created() {
+    let statusTandai = localStorage.getItem('statusTandai');
+    if (statusTandai) {
+      this.pelanggan = JSON.parse(statusTandai);
+    } else {
+      this.loadData();
+    }
+  },
 };
 </script>
 

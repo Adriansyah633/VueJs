@@ -17,7 +17,7 @@
           <li><a href="#"><i class="fab fa-instagram"></i> pdam_kota_semarang</a></li>
           <li><a href="#"><i class="fab fa-phone"></i>  0811-26800-60</a></li>
         </ul>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light">
          <div class="container-fluid">
              <router-link class="navbar-brand poppins-semibold" to="/das  hboard">PDAM</router-link>
              <button class="navbar-toggler" type="button"  @click="toggleNavCollapse" target="navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

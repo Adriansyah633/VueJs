@@ -317,7 +317,7 @@ export default {
             this.$router.push(`/editnolangg/${nolangg}`);
           } else if (kode === "0") {
             this.showWarning = true; 
-            this.warningMessage = "Data Tidak Ditemukan!!";
+            this.warningMessage = "Data Tidak Ditemukan atau Data Sudah Diedit!!";
             setTimeout(() => {
               this.showWarning = false;
             }, 3000);

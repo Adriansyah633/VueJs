@@ -116,7 +116,7 @@ body {
   background-image: url('../../assets/bgweb.jpg');
   background-size: cover;
   background-position: center;
-  /* Properti tambahan lainnya */
+  background-attachment: fixed;
 }
 .container-lg{
   margin-top: 20px;

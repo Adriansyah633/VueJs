@@ -207,12 +207,10 @@
           </div>
           <div class="row align-items-center">
             <div class="col-md-6">
-              <router-link
-                to="/nolangg/"
-                class="btn btn-success btn-block poppins-semibold"
-              >
-                KEMBALI
-              </router-link>
+             <button class="btn btn-success btn-block poppins-semibold" @click="goBack">
+               KEMBALI
+             </button>
+             
             </div>
             <div class="col-md-6">
               <button
@@ -293,6 +291,10 @@
      },
     },
     methods: {
+      goBack() {
+      // Kembali menggunakan router
+      this.$router.go(-1);
+    },
       getAvailableStatusMeter(){
         const config = {
             headers : {Authorization : `Bearer ${localStorage.getItem("token")}`}, 
@@ -307,11 +309,12 @@
         });
       },
       getdetailpelanggan() {
+        // const periode = localStorage.getItem("periode")
         const headers = {
           Authorization: "Bearer " + localStorage.getItem("token"),
         };
         const params={
-          periode : '202403'
+          periode : '202404'
         }
         this.$axios
           .get(
@@ -366,7 +369,7 @@
           .then((response) => {
             console.log("Data berhasil disimpan:", response.data);
             this.getAvailableStatusMeter();
-              this.$router.push(`/nolangg`);
+            this.$router.go(-1);
           })
           .catch((error) => {
             console.error("Error Saving Data:", error);

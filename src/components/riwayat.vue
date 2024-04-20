@@ -10,20 +10,36 @@
           </router-link>
         </div>
       </div>
-      <div class="col-md-4 d-flex justify-content-end">
-        <input
-          type="text"
-          name="cari-data"
-          v-model="search"
-          class="form-control mr-2"
-        />
-        <button
-          class="btn btn-md btn-success"
-          name="cari_nolangg"
-          v-on:click="cari_data_nolangg()"
-        >
-        <i class="fa-solid fa-magnifying-glass"></i>  
-        </button>
+
+      <div class="col-md-6 d-flex align-items-center justify-content-end">
+        <div class="row">
+          <div class="col">
+            <button
+              class="btn btn-secondary poppins-semibold"
+              v-on:click="kembali()"
+            >
+            <i class="fa fa-backward" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="col">
+            <input
+              type="text"
+              name="cari-data-riwayat"
+              v-model="search_riwayat"
+              class="form-control form-control-sm" 
+              style="width: 200px;" 
+            />
+          </div>
+          <div class="col">
+            <button
+              class="btn btn-success"
+              name="cari_nolangg"
+              v-on:click="cari_data_nolangg()"
+            >
+              <i class="fa-solid fa-magnifying-glass"></i>  
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <table
@@ -74,27 +90,42 @@
         </tr>
       </tbody>
     </table>
-    <b-modal ref="detailModal" hide-footer>
-      <template #modal-title>Detail Pelanggan</template>
+    <b-modal class="poppins-regular" ref="detailModal" hide-footer>
+      <template #modal-title>
+        <div style="background-color: #f0f0f0; padding: 10px;">
+          <h5 style="margin: 0; font-weight: bold;">Detail Pelanggan</h5>
+        </div>
+    </template>
       <div v-for="(detail, index) in detailPelanggan" :key="index" class="detail-section">
       <div class="text-left" style="padding: 10px; border-bottom: 2px black">
-        <p>Nomor Pelanggan: {{ selectedNolangg }}</p>
-        <p>DISM : {{ detail.dism }}</p>
-        <p>
-          Cabang :
+        <p style="font-weight: bold;">
+          <span  style="background: linear-gradient(to left, #459bcd, #107EFF); background-color: blue; border-radius: 5px; color: white; padding: 5px; font-weight: bold;">Nomor Pelanggan:</span> 
+           {{ selectedNolangg }}</p>
+        <p style="font-weight: bold;">
+          <span  style="background: linear-gradient(to left, #459bcd, #107EFF); background-color: blue; border-radius: 5px; color: white; padding: 5px; font-weight: bold;">DISM :</span>
+           {{ detail.dism }}</p>
+        <p style="font-weight: bold;">
+          <span  style="background: linear-gradient(to left, #459bcd, #107EFF); background-color: blue; border-radius: 5px; color: white; padding: 5px; font-weight: bold;">Cabang:</span>
           {{ detail.cabang ? detail.cabang.nm_cabang : "" }}
         </p>
-        <p>Periode : {{ detail.periode }}</p>
-        <p>Kini : {{ detail.kini }}</p>
-        <p>Lalu : {{ detail.lalu }}</p>
-        <p>
-          Status Meter :
+        <p style="font-weight: bold;">
+          <span  style="background: linear-gradient(to left, #459bcd, #107EFF); background-color: blue; border-radius: 5px; color: white; padding: 5px; font-weight: bold;">Periode :</span>
+           {{ detail.periode }}</p>
+        <p style="font-weight: bold;">
+          <span  style="background: linear-gradient(to left, #459bcd, #107EFF); background-color: blue; border-radius: 5px; color: white; padding: 5px; font-weight: bold;">Kini :</span> 
+          {{ detail.kini }}</p>
+        <p style="font-weight: bold;">
+          <span  style="background: linear-gradient(to left, #459bcd, #107EFF); background-color: blue; border-radius: 5px; color: white; padding: 5px; font-weight: bold;">Lalu :</span> 
+          {{ detail.lalu }}</p>
+        <p style="font-weight: bold;">
+          <span  style="background: linear-gradient(to left, #459bcd, #107EFF); background-color: blue; border-radius: 5px; color: white; padding: 5px; font-weight: bold;">Status Meter :</span>
           {{ detail.st ? detail.status_meter.status : "" }}
         </p>
-        <p>
-          Status Data :
+        <p style="font-weight: bold;">
+          <span  style="background: linear-gradient(to left, #459bcd, #107EFF); background-color: blue; border-radius: 5px; color: white; padding: 5px; font-weight: bold;">Status Data :</span>
           {{ detail.dt ? detail.status_baca.nm_status : "" }}
         </p>
+        <p  style=" text-align: center; color: black; padding: 5px; font-weight: bold;">Gambar Meteran</p>
         <div class="text-center">
           <b-img
             v-if="detail.file"
@@ -132,6 +163,7 @@
 </template>
 <script>
 
+// import { search } from "core-js/fn/symbol";
 import LoadingComponent from "./LoadingComponents.vue"; 
 export default {
   name: "RiwayatComponent",
@@ -153,6 +185,7 @@ export default {
       detailPelanggan: {},
       status_baca: "",
       status_meter: "",
+      search_riwayat:"",
     };
   },
   created() {
@@ -181,6 +214,44 @@ export default {
         })
         .catch((error) => console.error("Error:", error));
         // this.loading = false;
+    },
+    
+    cari_data_nolangg() {
+    // Cari data berdasarkan nolangg
+    if (this.search_riwayat.trim() !== '') {
+      const token = localStorage.getItem('token');
+      const kode = localStorage.getItem("kode");
+      const params = {
+        page: this.currentPage,
+        perPage: this.perPage,
+      };
+      const url = `http://localhost/BackEnd/Backend-Laravel/public/api/cari`;
+      const data = {
+        nolangg: this.search_riwayat,
+        kode: kode
+      };
+      const headers = {
+        Authorization: "Bearer " + token,
+      };
+
+      this.$axios.post(url, data, { headers }, { params })
+        .then(response => {
+          console.log(response);
+          this.pelanggan = response.data.data;
+          this.totalRows = response.data.total;
+          this.pagination = response.data;
+        })
+        .catch(error => console.error("Error:", error));
+    } else {
+    // Jika input pencarian kosong, load semua data riwayat
+    this.search_riwayat = '';
+    this.getDetailPelanggann();
+  }
+  },
+  kembali() {
+      // Kembali ke tampilan tabel awal
+      this.search_riwayat = ''; // Reset input pencarian
+      this.getDetailPelanggann(); // Tampilkan semua data
     },
     deleteConfirm(nolangg) {
       if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {

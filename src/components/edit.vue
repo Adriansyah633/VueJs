@@ -10,7 +10,7 @@
         border-radius: 5px;
       "
     >
-      Input Data Meter
+      EDIT DATA METER
     </h2>
     <div class="row">
       <div class="col-md-6">
