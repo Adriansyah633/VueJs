@@ -146,7 +146,7 @@ export default {
     //   const headers = {
     //     Authorization: "Bearer " + localStorage.getItem("token"),
     //   };
-    //   const url = `http://localhost/BE/be/public/api/bendel`;
+    //   const url = `http://localhost:8080/BE/be/public/api/bendel`;
     //   this.$axios
     //     .post(url, {headers})
     //     .then((response) => {
@@ -169,7 +169,7 @@ export default {
         page: this.currentPage,
         perPage: this.perPage,
       };
-      const url = `http://localhost/BackEnd/Backend-Laravel/public/api/cari`;
+      const url = `http://localhost:8080/BackEnd/Backend-Laravel/public/api/cari`;
       const data = {
         nolangg: this.search_nolangg,
         kode: kode
@@ -204,7 +204,7 @@ export default {
         page: this.currentPage,
         perPage: this.perPage,
       };
-    const url = `http://localhost/BackEnd/Backend-Laravel/public/api/bendel`;
+    const url = `http://localhost:8080/BackEnd/Backend-Laravel/public/api/bendel`;
     const data = {
         bendel: this.search,
         kode : kode

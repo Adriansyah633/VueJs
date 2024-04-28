@@ -53,7 +53,7 @@
               <button v-on:click="login()" class="btn btn-primary poppins-semibold">Login</button>
             </div>
             <div class="text-center">
-              <router-link to="/home">
+              <router-link to="/">
                 <button  class="btn btn-success poppins-semibold">Home</button>
               </router-link>
             </div>
@@ -82,7 +82,7 @@ export default {
           kode:this.kode,
           password:this.password,
        };
-       axios.post("http://localhost/BackEnd/Backend-Laravel/public/api/login", user, {
+       axios.post("http://localhost:8080/BackEnd/Backend-Laravel/public/api/login", user, {
        }).then((result) => {
          localStorage.setItem('token', result.data.data.token);
          localStorage.setItem('role', result.data.data.role);

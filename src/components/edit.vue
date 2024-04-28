@@ -95,6 +95,7 @@
                 placeholder="Nomor Pelanggan"
                 aria-label="Nomor Pelanggan"
                 aria-describedby="addon-wrapping"
+                :disabled="true"
               />
             </div>
           </div>
@@ -265,7 +266,7 @@ export default {
       currentLocationDisplay: null,
       lokasi: "",
       dropzoneOptions: {
-        url: `http://localhost/BackEnd/Backend-Laravel/public/api/upload-image/${this.$route.params.nolangg}`,
+        url: `http://localhost:8080/BackEnd/Backend-Laravel/public/api/upload-image/${this.$route.params.nolangg}`,
         thumbnailWidth: 150,
         thumbnailHeight: 150,
         maxFilesize: 5, // in MB
@@ -307,7 +308,7 @@ export default {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       };
       this.$axios
-        .get(`http://localhost/BackEnd/Backend-Laravel/public/api/getStatus`, config)
+        .get(`http://localhost:8080/BackEnd/Backend-Laravel/public/api/getStatus`, config)
         .then((response) => {
           console.log("Status Meter Data:", response.data);
           this.all_status_meter = response.data;
@@ -326,7 +327,7 @@ export default {
       };
       this.$axios
         .get(
-          `http://localhost/BackEnd/Backend-Laravel/public/api/getdetail?nolangg=${this.$route.params.nolangg}&periode=${params.periode}&petugas=${kode}`,
+          `http://localhost:8080/BackEnd/Backend-Laravel/public/api/getdetail?nolangg=${this.$route.params.nolangg}&periode=${params.periode}&petugas=${kode}`,
           { headers }
         )
         .then((result) => {
@@ -380,7 +381,7 @@ export default {
 
       this.$axios
         .post(
-          `http://localhost/BackEnd/Backend-Laravel/public/api/edit/${this.$route.params.nolangg}?periode=${params.periode}&petugas=${kode}`,
+          `http://localhost:8080/BackEnd/Backend-Laravel/public/api/edit/${this.$route.params.nolangg}?periode=${params.periode}&petugas=${kode}`,
           formData,
           { headers }
         )

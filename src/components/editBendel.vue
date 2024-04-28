@@ -93,6 +93,7 @@
                   placeholder="Nomor Pelanggan"
                   aria-label="Nomor Pelanggan"
                   aria-describedby="addon-wrapping"
+                  :disabled="true"
                 />
               </div>
             </div>
@@ -255,7 +256,7 @@
         currentLocationDisplay: null,
         lokasi:"",
         dropzoneOptions: {
-          url: `http://localhost/BackEnd/Backend-Laravel/public/api/upload-image/${this.$route.params.nolangg}`,
+          url: `http://localhost:8080/BackEnd/Backend-Laravel/public/api/upload-image/${this.$route.params.nolangg}`,
           thumbnailWidth: 150,
           thumbnailHeight: 150,
           maxFilesize: 2, // in MB
@@ -299,7 +300,7 @@
         const config = {
             headers : {Authorization : `Bearer ${localStorage.getItem("token")}`}, 
         };
-        this.$axios.get(`http://localhost/BackEnd/Backend-Laravel/public/api/getStatus`, config)
+        this.$axios.get(`http://localhost:8080/BackEnd/Backend-Laravel/public/api/getStatus`, config)
         .then(response =>{
           console.log("Status Meter Data:", response.data);
           this.all_status_meter = response.data;
@@ -318,7 +319,7 @@
         }
         this.$axios
           .get(
-            `http://localhost/BackEnd/Backend-Laravel/public/api/getdetail?nolangg=${this.$route.params.nolangg}&periode=${params.periode}`,
+            `http://localhost:8080/BackEnd/Backend-Laravel/public/api/getdetail?nolangg=${this.$route.params.nolangg}&periode=${params.periode}`,
             {headers}
           )
           .then((result) => {
@@ -362,7 +363,7 @@
         formData.append("all_status_meter", this.all_status_meter);
         this.$axios
           .post(
-            `http://localhost/BackEnd/Backend-Laravel/public/api/edit/${this.$route.params.nolangg}?periode=${params.periode}&petugas=${kode}`,
+            `http://localhost:8080/BackEnd/Backend-Laravel/public/api/edit/${this.$route.params.nolangg}?periode=${params.periode}&petugas=${kode}`,
             formData,
             { headers }
           )

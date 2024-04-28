@@ -307,7 +307,7 @@ export default {
       const headers = {
         Authorization: "bearer " + localStorage.getItem("token"),
       };
-      const url = "http://localhost/BackEnd/Backend-Laravel/public/api/pelanggan-check";
+      const url = "http://localhost:8080/BackEnd/Backend-Laravel/public/api/pelanggan-check";
       this.$axios
         .post(url, data, { headers })
         .then((response) => {
@@ -344,7 +344,7 @@ export default {
       const headers = {
         Authorization: "bearer " + token,
       };
-      const url = "http://localhost/BackEnd/Backend-Laravel/public/api/bendel-check";
+      const url = "http://localhost:8080/BackEnd/Backend-Laravel/public/api/bendel-check";
       this.$axios
         .post(url, data, { headers })
         .then((response) => {
@@ -375,7 +375,7 @@ export default {
         petugas: kode,
         periode: "202403",
       };
-      const url = `http://localhost/BackEnd/Backend-Laravel/public/api/riwayat?petugas=${params.petugas}&periode=${params.periode}`;
+      const url = `http://localhost:8080/BackEnd/Backend-Laravel/public/api/riwayat?petugas=${params.petugas}&periode=${params.periode}`;
       console.log(url);
       this.$axios
         .get(url, { headers })

@@ -118,6 +118,9 @@
           <span  style="background: linear-gradient(to left, #459bcd, #107EFF); background-color: blue; border-radius: 5px; color: white; padding: 5px; font-weight: bold;">Lalu :</span> 
           {{ detail.lalu }}</p>
         <p style="font-weight: bold;">
+          <span  style="background: linear-gradient(to left, #459bcd, #107EFF); background-color: blue; border-radius: 5px; color: white; padding: 5px; font-weight: bold;">M3 :</span> 
+          {{ detail.m3 }}</p>
+        <p style="font-weight: bold;">
           <span  style="background: linear-gradient(to left, #459bcd, #107EFF); background-color: blue; border-radius: 5px; color: white; padding: 5px; font-weight: bold;">Status Meter :</span>
           {{ detail.st ? detail.status_meter.status : "" }}
         </p>
@@ -203,7 +206,7 @@ export default {
         petugas: kode,
         periode: '202404',
       };
-      const url = `http://localhost/BackEnd/Backend-Laravel/public/api/riwayat?petugas=${params.petugas}&periode=${params.periode}`;
+      const url = `http://localhost:8080/BackEnd/Backend-Laravel/public/api/riwayat?petugas=${params.petugas}&periode=${params.periode}`;
       console.log(url);
       this.$axios
         .get(url, { headers })
@@ -225,7 +228,7 @@ export default {
         page: this.currentPage,
         perPage: this.perPage,
       };
-      const url = `http://localhost/BackEnd/Backend-Laravel/public/api/cari`;
+      const url = `http://localhost:8080/BackEnd/Backend-Laravel/public/api/cari-riwayat`;
       const data = {
         nolangg: this.search_riwayat,
         kode: kode
@@ -263,7 +266,7 @@ export default {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       this.$axios
-        .delete(`http://localhost/BackEnd/Backend-Laravel/public/api/riwayat/{nolangg}`, headers)
+        .delete(`http://localhost:8080/BackEnd/Backend-Laravel/public/api/riwayat/{nolangg}`, headers)
         .then(() => {
           // Hapus data dari array pelanggan setelah berhasil dihapus dari backend
           this.pelanggan = this.pelanggan.filter(
@@ -287,11 +290,11 @@ export default {
     const periode2 = ['202404']; 
     const requests = [];
     periode1.forEach(periode => {
-      const url = `http://localhost/BackEnd/Backend-Laravel/public/api/getdetail?nolangg=${nolangg}&periode=${periode}`;
+      const url = `http://localhost:8080/BackEnd/Backend-Laravel/public/api/getdetail?nolangg=${nolangg}&periode=${periode}`;
       requests.push(this.$axios.get(url, { headers }));
     });
     periode2.forEach(periode => {
-      const url = `http://localhost/BackEnd/Backend-Laravel/public/api/getdetail?nolangg=${nolangg}&periode=${periode}&petugas=${kode}`;
+      const url = `http://localhost:8080/BackEnd/Backend-Laravel/public/api/getdetail?nolangg=${nolangg}&periode=${periode}&petugas=${kode}`;
       requests.push(this.$axios.get(url, { headers }));
     });
     Promise.all(requests)

@@ -77,7 +77,7 @@ export default {
 
   // Kemudian, coba lakukan request logout ke server
   try {
-    const response = await fetch('http://localhost/BackEnd/Backend-Laravel/public/api/logout', {
+    const response = await fetch('http://localhost:8080/BackEnd/Backend-Laravel/public/api/logout', {
       method: 'POST',
     });
 
