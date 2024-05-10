@@ -125,6 +125,9 @@
               <p class="card-text">
                 Tanggal : {{ new Date().toLocaleDateString() }}
               </p>
+              <p class="card-text">
+                Jam Baca Hari Ini : {{ jamBacaHariIni }}
+              </p>
             </div>
           </div>
           <div class="col align-items-center card-opsi">
@@ -229,8 +232,8 @@
     <footer>
       <div class="footer poppins-semibold">
         <p>
-          © 2018 Perumda Air Minum Tirta Moedal Kota Semarang • dikembangkan
-          oleh dinustek.
+          © 2024 Perumda Air Minum Tirta Moedal Kota Semarang • dikembangkan
+          oleh Syahrul Adrianto.
         </p>
         <h6>Pembaca Meter</h6>
       </div>
@@ -249,6 +252,7 @@ export default {
   },
   data() {
     return {
+      jamBacaHariIni: "",
       UserRole: null,
       loading: true,
       showWarning: false,
@@ -300,8 +304,10 @@ export default {
       this.UserRole = localStorage.getItem("role");
     },
     cari_data_nolangg() {
+      const kode = localStorage.getItem("kode");
       const nolangg = this.search;
       const data = {
+        kode : kode,
         nolangg: nolangg,
       };
       const headers = {
@@ -317,17 +323,11 @@ export default {
             this.$router.push(`/editnolangg/${nolangg}`);
           } else if (kode === "0") {
             this.showWarning = true; 
-            this.warningMessage = "Data Tidak Ditemukan atau Data Sudah Diedit!!";
+            this.warningMessage = "Data Tidak Ditemukan";
             setTimeout(() => {
               this.showWarning = false;
             }, 3000);
-          } else if (kode === "2") {
-            this.showWarning = true;
-            this.warningMessage = "Data Sudah ada!!";
-            setTimeout(() => {
-              this.showWarning = false;
-            }, 3000);
-          }
+          } 
         })
         .catch((error) => {
           console.log(error);
@@ -373,7 +373,7 @@ export default {
       };
       const params = {
         petugas: kode,
-        periode: "202403",
+        periode: "202405",
       };
       const url = `http://localhost:8080/BackEnd/Backend-Laravel/public/api/riwayat?petugas=${params.petugas}&periode=${params.periode}`;
       console.log(url);
@@ -386,9 +386,30 @@ export default {
         })
         .catch((error) => console.error("Error:", error));
     },
+    getJamBaca() {
+      const headers = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+      const kode = localStorage.getItem("kode");
+      const params = {
+        petugas : kode,
+        periode : "202405",
+      }
+    const url =`http://localhost:8080/BackEnd/Backend-Laravel/public/api/getJamBaca?petugas=${params.petugas}&periode=${params.periode}`;
+    this.$axios.get(url, {headers})
+      .then((response) => {
+        this.jamBacaHariIni = response.data.data.jam_baca;
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+      console.log()
+  },
   },
   mounted() {
     this.getfromLocalStorage();
+    this.getJamBaca();
     this.timer = setInterval(() => {
       this.bars.forEach((bar) => (bar.value = 25 + Math.random() * 75));
     }, 2000);

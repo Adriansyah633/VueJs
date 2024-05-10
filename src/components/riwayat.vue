@@ -99,33 +99,33 @@
       <div v-for="(detail, index) in detailPelanggan" :key="index" class="detail-section">
       <div class="text-left" style="padding: 10px; border-bottom: 2px black">
         <p style="font-weight: bold;">
-          <span  style="background: linear-gradient(to left, #459bcd, #107EFF); background-color: blue; border-radius: 5px; color: white; padding: 5px; font-weight: bold;">Nomor Pelanggan:</span> 
+          <span  style="border-radius: 5px; color: #107EFF; padding: 5px; font-weight: bold;">Nomor Pelanggan:</span> 
            {{ selectedNolangg }}</p>
         <p style="font-weight: bold;">
-          <span  style="background: linear-gradient(to left, #459bcd, #107EFF); background-color: blue; border-radius: 5px; color: white; padding: 5px; font-weight: bold;">DISM :</span>
+          <span  style="border-radius: 5px; color: #107EFF; padding: 5px; font-weight: bold;">DISM :</span>
            {{ detail.dism }}</p>
         <p style="font-weight: bold;">
-          <span  style="background: linear-gradient(to left, #459bcd, #107EFF); background-color: blue; border-radius: 5px; color: white; padding: 5px; font-weight: bold;">Cabang:</span>
+          <span  style="border-radius: 5px; color: #107EFF; padding: 5px; font-weight: bold;">Cabang:</span>
           {{ detail.cabang ? detail.cabang.nm_cabang : "" }}
         </p>
         <p style="font-weight: bold;">
-          <span  style="background: linear-gradient(to left, #459bcd, #107EFF); background-color: blue; border-radius: 5px; color: white; padding: 5px; font-weight: bold;">Periode :</span>
+          <span  style="border-radius: 5px; color: #107EFF; padding: 5px; font-weight: bold;">Periode :</span>
            {{ detail.periode }}</p>
         <p style="font-weight: bold;">
-          <span  style="background: linear-gradient(to left, #459bcd, #107EFF); background-color: blue; border-radius: 5px; color: white; padding: 5px; font-weight: bold;">Kini :</span> 
+          <span  style="border-radius: 5px; color: #107EFF; padding: 5px; font-weight: bold;">Kini :</span> 
           {{ detail.kini }}</p>
         <p style="font-weight: bold;">
-          <span  style="background: linear-gradient(to left, #459bcd, #107EFF); background-color: blue; border-radius: 5px; color: white; padding: 5px; font-weight: bold;">Lalu :</span> 
+          <span  style="border-radius: 5px; color: #107EFF; padding: 5px; font-weight: bold;">Lalu :</span> 
           {{ detail.lalu }}</p>
         <p style="font-weight: bold;">
-          <span  style="background: linear-gradient(to left, #459bcd, #107EFF); background-color: blue; border-radius: 5px; color: white; padding: 5px; font-weight: bold;">M3 :</span> 
+          <span  style="border-radius: 5px; color: #107EFF; padding: 5px; font-weight: bold;">M3 :</span> 
           {{ detail.m3 }}</p>
         <p style="font-weight: bold;">
-          <span  style="background: linear-gradient(to left, #459bcd, #107EFF); background-color: blue; border-radius: 5px; color: white; padding: 5px; font-weight: bold;">Status Meter :</span>
+          <span  style="border-radius: 5px; color: #107EFF; padding: 5px; font-weight: bold;">Status Meter :</span>
           {{ detail.st ? detail.status_meter.status : "" }}
         </p>
         <p style="font-weight: bold;">
-          <span  style="background: linear-gradient(to left, #459bcd, #107EFF); background-color: blue; border-radius: 5px; color: white; padding: 5px; font-weight: bold;">Status Data :</span>
+          <span  style="border-radius: 5px; color: #107EFF; padding: 5px; font-weight: bold;">Status Data :</span>
           {{ detail.dt ? detail.status_baca.nm_status : "" }}
         </p>
         <p  style=" text-align: center; color: black; padding: 5px; font-weight: bold;">Gambar Meteran</p>
@@ -204,7 +204,7 @@ export default {
       };
       const params = {
         petugas: kode,
-        periode: '202404',
+        periode: '202405',
       };
       const url = `http://localhost:8080/BackEnd/Backend-Laravel/public/api/riwayat?petugas=${params.petugas}&periode=${params.periode}`;
       console.log(url);
@@ -286,8 +286,8 @@ export default {
     }
     const headers = { Authorization: `Bearer ${token}` };
     this.selectedNolangg = nolangg;
-    const periode1 = ['202403']; 
-    const periode2 = ['202404']; 
+    const periode1 = ['202404']; 
+    const periode2 = ['202405']; 
     const requests = [];
     periode1.forEach(periode => {
       const url = `http://localhost:8080/BackEnd/Backend-Laravel/public/api/getdetail?nolangg=${nolangg}&periode=${periode}`;

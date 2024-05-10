@@ -36,7 +36,8 @@
             <label for="alamat" class="poppins-semibold">Alamat</label>
             <textarea
               type="text"
-              v-model="alamat"
+              v-if="currentLocation"
+              v-model="currentLocationDisplay"
               class="poppins-regular form-control"
               name="alamat"
               placeholder="Alamat Pelanggan"
@@ -315,7 +316,7 @@
           Authorization: "Bearer " + localStorage.getItem("token"),
         };
         const params={
-          periode : '202404'
+          periode : '202405'
         }
         this.$axios
           .get(
@@ -347,8 +348,13 @@
         };
         const selectedStatus = this.all_status_meter.find(status => status.status === this.st);
         const params ={
-          periode: '202404'
+          periode: '202405'
         }
+        if (!this.file) {
+        alert("File harus dipilih");
+        return; // Hentikan eksekusi metode jika tidak ada file yang dipilih
+        }
+        const ktValue = this.kt && this.kt.trim() !== "" ? this.kt.trim() : "";
         const formData = new FormData();
         formData.append("nolangg", this.nolangg);
         formData.append("dism", this.dism);
@@ -358,7 +364,7 @@
         formData.append("dt", this.dt.kode);
         formData.append("st", selectedStatus.kode);
         formData.append("kini", this.kini);
-        formData.append("kt", this.kt);
+        formData.append("kt", ktValue);
         formData.append("file", this.file);
         formData.append("all_status_meter", this.all_status_meter);
         this.$axios
@@ -426,6 +432,7 @@
             if (data.status === "OK") {
               // Ambil alamat pertama dari hasil geocoding
               const address = data.results[0].formatted_address;
+              this.alamat = address;
               // Set nilai textarea untuk menampilkan alamat saat ini
               this.currentLocationDisplay = address;
             } else {

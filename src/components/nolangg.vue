@@ -142,21 +142,6 @@ export default {
     },
   },
   methods: {
-    // loadData() {
-    //   const headers = {
-    //     Authorization: "Bearer " + localStorage.getItem("token"),
-    //   };
-    //   const url = `http://localhost:8080/BE/be/public/api/bendel`;
-    //   this.$axios
-    //     .post(url, {headers})
-    //     .then((response) => {
-    //       this.pelanggan = response.data.data;
-    //       this.pagination = response.data;
-    //       this.totalRows = response.data.total;
-    //     })
-    //     .catch((error) => console.error("Error:", error));
-    // },
-
     tb_pelanggan() {
       this.loadData();
     },

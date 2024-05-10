@@ -38,11 +38,12 @@
           <label for="alamat" class="poppins-semibold">Alamat</label>
           <textarea
             type="text"
-            v-model="alamat"
+            v-if="currentLocation"
+            v-model="currentLocationDisplay"
             class="poppins-regular form-control"
-            name="alamat"
-            placeholder="Alamat Pelanggan"
-            aria-label="Alamat Pelanggan"
+            name="currentLocation"
+            placeholder="Latitude, Longitude"
+            aria-label="Lokasi Saat Ini"
             aria-describedby="addon-wrapping"
           ></textarea>
         </div>
@@ -196,8 +197,27 @@
           <div class="col-md-4">
             <label for="foto_meter" class="poppins-semibold">Foto Meter</label>
           </div>
+          <div class="text-center">
+            <div class="col-md-8">
+              <b-img
+                v-model="file"
+                :src="file"
+                fluid
+                alt="Gambar Meteran"
+                thumbnail
+                rounded
+              ></b-img>
+            </div>
+        </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-md-4">
+            <label for="foto_meter" class="poppins-semibold">Input Foto Meter</label>
+          </div>
+          <div class="text-center">
+        </div>
           <div class="col-md-8">
-            <div class="input mb-5 display-flex">
+            <div class="input mb-5">
               <Vue2Dropzone
                 v-model="file"
                 ref="myVueDropzone"
@@ -240,7 +260,7 @@
 <script>
 import Vue2Dropzone from "vue2-dropzone";
 import "vue2-dropzone/dist/vue2Dropzone.min.css";
-import { required } from "vuelidate/lib/validators";
+// import { required } from "vuelidate/lib/validators";
 export default {
   name: "EditComponent",
   components: {
@@ -260,13 +280,13 @@ export default {
       status_baca: "",
       periode: "",
       map: null,
-      file: null,
+      file: "",
       all_status_meter: [],
       currentLocation: null,
       currentLocationDisplay: null,
       lokasi: "",
       dropzoneOptions: {
-        url: `http://localhost:8080/BackEnd/Backend-Laravel/public/api/upload-image/${this.$route.params.nolangg}`,
+        url: `http://localhost:8080/BackEnd/Backend-Laravel/public/api/upload-image-riwayat/${this.$route.params.nolangg}`,
         thumbnailWidth: 150,
         thumbnailHeight: 150,
         maxFilesize: 5, // in MB
@@ -297,11 +317,6 @@ export default {
       },
     };
   },
-  validations: {
-    file: {
-      required,
-    },
-  },
   methods: {
     getAvailableStatusMeter() {
       const config = {
@@ -323,7 +338,7 @@ export default {
         Authorization: "Bearer " + localStorage.getItem("token"),
       };
       const params = {
-        periode: "202404",
+        periode: "202405",
       };
       this.$axios
         .get(
@@ -342,7 +357,7 @@ export default {
           this.st = result.data.status_meter.status;
           this.periode = result.data.periode;
           this.status_meter = result.data.status_meter.status;
-          this.all_status_meter = result.data.all_status_meter;
+          // this.all_status_meter = result.data.all_status_meter;
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
@@ -357,7 +372,7 @@ export default {
         (status) => status.status === this.st
       );
       const params = {
-        periode: "202404",
+        periode: "202405",
         petugas: "kode",
       };
       // const acceptedFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -366,16 +381,18 @@ export default {
       //   alert('File yang diunggah harus berupa gambar dalam format JPEG atau PNG.');
       //   return;
       // }
+      const ktValue = this.kt && this.kt.trim() !== "" ? this.kt.trim() : "";
       const formData = new FormData();
       formData.append("nolangg", this.nolangg);
       formData.append("dism", this.dism);
       formData.append("periode", this.periode);
+      formData.append("tgl_data", this.tgl_data);
       formData.append("alamat", this.alamat);
       formData.append("lalu", this.lalu);
       formData.append("dt", this.dt.kode);
       formData.append("st", selectedStatus.kode);
       formData.append("kini", this.kini);
-      formData.append("kt", this.kt);
+      formData.append("kt", ktValue);
       formData.append("file", this.file);
       formData.append("all_status_meter", this.all_status_meter);
 
@@ -447,6 +464,7 @@ export default {
           if (data.status === "OK") {
             // Ambil alamat pertama dari hasil geocoding
             const address = data.results[0].formatted_address;
+            this.alamat = address;
             // Set nilai textarea untuk menampilkan alamat saat ini
             this.currentLocationDisplay = address;
           } else {
